@@ -4,8 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
@@ -24,10 +22,10 @@ class ProductFactory extends Factory
 
         return [
             'name' => $name,
+            'category_id' => fake()->numberBetween(1, 6),
             'slug' => $name,
             'price' => fake()->randomFloat(2, 1, 100),
             'available_quantity' => fake()->numberBetween(1, 100),
-            'product_img' => fake()->imageUrl()
         ];
     }
 }
