@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        // \App\Models\User::factory()->count(10)->create(),
+        // \App\Models\Product::factory()->count(20)->create(),
+        // \App\Models\Transaction::factory()->count(30)->create()
+
 
         Schema::disableForeignKeyConstraints();
         $this->call([
