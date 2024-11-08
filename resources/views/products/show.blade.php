@@ -1,6 +1,6 @@
-<x-layouts.app title="Products | Create">
-    <div class="mx-6 my-6 w-[50%]">
-        <form action="{{route('products.update', ['id' => $product->id])}}" method="POST" enctype="multipart/form-data">
+<x-layouts.app title="Products | Update">
+    <div class="mx-6 my-6 w-[50%] ">
+        <form action="{{route('admin.products.update', ['id' => $product->id])}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="flex flex-col gap-y-1 mb-5">
                 <label for="product_name">Product Name</label>
@@ -36,11 +36,11 @@
                 @enderror
             </div>
             <div class="flex gap-x-3 mt-5">
-                <div class="px-2 py-2 rounded-md bg-gray-300 w-40 text-white flex justify-center">
-                    <a href="{{route('products.index')}}">Cancel</a>
+                <div class="rounded-md bg-gray-300 text-white flex justify-center">
+                    <a href="{{route('admin.products.index')}}" class="px-2 py-2 w-40 text-center">Cancel</a>
                 </div>
-                <div class="px-2 py-2 rounded-md bg-adminPrimary w-40 text-white flex justify-center">
-                    <button type="submit">Update Product</button>
+                <div class="rounded-md bg-adminPrimary text-white flex justify-center">
+                    <button type="submit" class="px-2 py-2 w-40 text-center">Update Product</button>
                 </div>
             </div>
         </form>

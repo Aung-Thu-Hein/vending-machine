@@ -51,7 +51,7 @@ class ProductsController extends Controller
         }
         DB::commit();
 
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
     public function show(Product $product)
@@ -86,7 +86,7 @@ class ProductsController extends Controller
         }
         DB::commit();
 
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
     public function delete(Product $product)
@@ -106,6 +106,20 @@ class ProductsController extends Controller
         }
         DB::commit();
 
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
+    }
+
+    public function list()
+    {
+        return view('home', [
+            'products' => Product::with(['transaction', 'category'])->paginate(10)
+        ]);
+    }
+
+    public function detail(Product $product)
+    {
+        return view('products.detail', [
+            'product' => $product
+        ]);
     }
 }
