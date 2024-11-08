@@ -48,8 +48,11 @@
 
     @guest
         <div class="flex justify-end">
-            <div class="rounded-md bg-gray-700 text-white flex justify-center">
+            <div class="rounded-md bg-gray-700 text-white flex justify-center mr-3">
                 <a href="{{ route('login.show') }}" class="px-2 py-2 w-20 text-center">Login</a>
+            </div>
+            <div class="rounded-md bg-gray-700 text-white flex justify-center">
+                <a href="{{ route('user.show') }}" class="px-2 py-2 w-20 text-center">Sing Up</a>
             </div>
         </div>
     @endguest

@@ -36,3 +36,5 @@ Route::middleware(['auth', 'admin'])->group(function() {
 Route::get('/login', [AuthController::class, 'login'])->middleware('guest')->name('login.show');
 Route::post('/login', [AuthController::class, 'store'])->name('login.store');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/signup', [UserController::class, 'show'])->middleware('guest')->name('user.show');
+Route::post('/signup', [UserController::class, 'store'])->name('user.store');
