@@ -2,77 +2,60 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ProductRequest;
 use App\Http\Resources\Api\ProductResource;
+use App\Contracts\Services\Product\ProductService;
 use App\Models\Product;
 use App\Traits\ApiResponse;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
     use ApiResponse;
 
-    public function index()
+    protected $product_service;
+
+    public function __construct(ProductService $product_service)
     {
-        $products = Product::paginate(10);
-        return ProductResource::collection($products);
+        $this->product_service = $product_service;
     }
 
-    public function show(Product $product)
+    public function index(): ResourceCollection
     {
-        return new ProductResource($product);
+        return $this->product_service->index();
     }
 
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request): ProductResource
     {
-        $model = [
-            'name' => $request->input('data.attributes.name'),
-            'category_id' => $request->input('data.attributes.category'),
-            'price' => $request->input('data.attributes.price'),
-            'available_quantity' => $request->input('data.attributes.availableQuantity'),
-        ];
-
-        return new ProductResource(Product::create($model));
+       return $this->product_service->storeProduct($request);
     }
 
-    public function edit(string $id)
+    public function show(Product $product): ProductResource
     {
-        //
+        return $this->product_service->show($product);
     }
 
-    // FOR PUT method
-    public function replace(ProductRequest $request, string $id)
+    //For PUT method
+    public function replace($id, ProductRequest $request)
     {
-        try {
-            $product = Product::findOrFail($id);
+        $is_updated = $this->product_service->update($id, $request);
 
-            $model = [
-                'name' => $request->input('data.attributes.name'),
-                'category_id' => $request->input('data.attributes.category'),
-                'price' => $request->input('data.attributes.price'),
-                'available_quantity' => $request->input('data.attributes.availableQuantity'),
-            ];
-
-            $product->update($model);
-
-            return new ProductResource($product);
-        } catch (ModelNotFoundException $exception) {
-            return $this->error('Product cannot be found.', 404);
+        if(!$is_updated) {
+            return $this->error("No product is found to update", 404);
         }
+
+        return $this->ok("Product has been successfully updated!");
     }
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        try {
-            $product = Product::findOrFail($id);
-            $product->delete();
+        $is_deleted = $this->product_service->delete($id);
 
-            return $this->ok('Procuct successfully deleted');
-
-        } catch (ModelNotFoundException $exception) {
-            return $this->error('Product cannot found.', 404);
+        if(!$is_deleted) {
+            return $this->error("No product is found to delete", 404);
         }
+
+        return $this->ok("Product has been successfully deleted!");
     }
 }
